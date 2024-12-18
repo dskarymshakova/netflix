@@ -1,0 +1,38 @@
+
+<div class="navbar">
+    <div class="container">
+        <div class="left">
+            <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png"
+            alt=""
+            />
+            <span><a href="/">Home</a></span>
+            <span><a href="{% url 'name' 'movies' %}">Movies</a></span>
+            <span><a href="{% url 'name' 'series' %}">Series</a></span>
+            <span><a href="#">New and Popular</a></span>
+        </div>
+        <div class="right">
+            <img
+                src="{{user.profile.photo.url}} "
+                alt=""
+                onclick="toggleMenu()"
+            />
+        <div class="profile" id="uProfile">
+            <div class="options">
+                <div class="user-info" onclick="profileData()">
+                        <img
+                            src="{{user.profile.photo.url}}"
+                            alt=""
+                        />
+                        <span class="username">
+                            {{user.username}}
+                        </span>
+                </div>
+                <div class="logout" id="logout">
+                        Logout
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

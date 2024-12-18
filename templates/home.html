@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'navbar.css' %} ">
+    <link rel="stylesheet" href="{% static 'featured.css' %} ">
+    <link rel="stylesheet" href="{% static 'list.css' %} ">
+    <link rel="stylesheet" href="{% static 'listitem.css' %} ">
+{% endblock %}
+
+{% block navbar %}
+{% include "navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    {% include "featured.html" with name=title movie=random_movie genre=genre %}
+
+    {% for movielist in movieslists %}
+        {% include "list.html" with unique_id=forloop.counter|num_to_word slider=0   movielist=movielist %}
+    {% endfor %}
+
+{% endblock %}
+
+{% block jsstyle %}
+    <script>
+        function handleClick(element,direction){
+            const container = document.querySelector(`.wrapper.${element} .container`);
+            console.log(container.getBoundingClientRect().x)
+            const distance = container.getBoundingClientRect().x - 50;
+            let slideNumber = parseInt(container.dataset.contentId);
+            let totalMovie = parseInt(container.dataset.contentTotalmovie);
+
+            if(direction == "left" && slideNumber > 0){
+                slideNumber-=1
+                container.style.transform = `translateX(${230 + distance}px)`;
+            }
+            if(direction == "right" && slideNumber < 5 && totalMovie > 6){
+                slideNumber+=1
+                container.previousElementSibling.style.visibility = "visible";
+                container.style.transform = `translateX(${-230 + distance}px)`;
+            }
+            container.dataset.contentId = slideNumber;
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const listItems = document.querySelectorAll(".listItem");
+
+            listItems.forEach((item, row) => {
+                let index = parseInt(item.dataset.contentId);
+                let left = '';
+                item.addEventListener("mouseover", function() {
+                    item.style.left = `${index * 225-50 + index*2.5}px`;
+                });
+
+                item.addEventListener("mouseout", function() {
+                    item.style.left = '';
+                });
+
+            });
+        });
+        
+        window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY >= 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+    </script>
+{% endblock %}
